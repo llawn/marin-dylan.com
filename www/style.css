@@ -1,0 +1,77 @@
+:root {
+  --primary-bg-color: #f4f4f4;        /* Fond clair par défaut */
+  --primary-text-color: #333;         /* Texte sombre */
+  --secondary-bg-color: #222;        /* Fond de navigation et autres */
+  --tertiary-bg-color: #333;
+  --accent-color: #3498db;            /* Accent couleur (peut-être pour les boutons ou liens) */
+  --button-bg-color: #333;            /* Fond des boutons */
+  --button-text-color: white;         /* Couleur du texte des boutons */
+  --section-bg-color: white;          /* Fond des sections */
+  --section-box-shadow: rgba(0, 0, 0, 0.1);  /* Ombre légère pour les sections */
+  
+  /* Dark Mode */
+  --dark-bg-color: #121212;           /* Fond pour le dark mode */
+  --dark-text-color: white;           /* Texte pour le dark mode */
+  --dark-section-bg-color: #1e1e1e;   /* Fond des sections en mode sombre */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--primary-bg-color);
+    color: var(--primary-text-color);
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--secondary-bg-color);
+    color: white
+}
+
+header {
+    background: var(--tertiary-bg-color);
+    color: white;
+    padding: 20px;
+}
+
+section {
+    padding: 20px;
+    margin: 20px;
+    background: var(--section-bg-color);
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px var(--section-box-shadow);
+}
+
+.toggle-button {
+    padding: 10px;
+    cursor: pointer;
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border: none;
+    border-radius: 5px;
+}
+
+.dark-mode {
+    background-color: var(--dark-bg-color);
+    color: var(--dark-text-color);
+}
+
+.dark-mode section {
+    background-color: var(--dark-section-bg-color);
+}
+
+#skills {
+    text-align: left;
+    margin-left: 20px;
+}
+@media (max-width: 600px) {
+    section {
+        margin: 10px;
+    }
+}
+
