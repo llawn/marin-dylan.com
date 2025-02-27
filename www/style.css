@@ -37,6 +37,7 @@ header {
     background: var(--tertiary-bg-color);
     color: white;
     padding: 20px;
+    margin-top: 75px;
 }
 
 section {
