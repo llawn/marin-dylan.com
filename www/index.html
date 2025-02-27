@@ -4,18 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dylan Marin</title>
-    <link rel="stylesheet" href="style.css">
+    <link href="https://www.nerdfonts.com/assets/css/combo.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="style.css">  
     <script src="script.js" defer></script>
 </head>
 <body>
     <nav>
-        <h1> Dylan Marin </h1>
-        <button id="dark-mode-toggle" class="toggle-button">Dark Mode</button>
+        <div class="nav-left">
+            <a href="#">Home</a>
+            <a href="#">Notes</a>
+        </div>
+
+        <div class="nav-right">
+            <button id="dark-mode-toggle" class="toggle-button">
+                <i class="nf nf-oct-moon"></i>
+            </button>
+        </div>
     </nav>
+
     <header>
         <h1>Dylan Marin</h1>
         <p>Engineering student at Centrale Lyon</p>
     </header>
+
     <section id="about">
         <h2>About</h2>
         <p>
@@ -23,6 +34,7 @@
             It is a master degree in applied mathematics, statistics (MAS) with a major in image, data.
         </p>
     </section>
+
     <section id="skills">
         <h2>Skills</h2>
         <ul>
@@ -34,6 +46,7 @@
             <li>Linux (Fedora)</li>
         </ul>
     </section>
+
     <footer>
         <h2>Contact</h2>
             <p>Email: <a href="#" id="sendEmailLink"> dylan.marin@etu.ec-lyon.fr </a> </p>
