@@ -43,3 +43,18 @@ and go in `.env`, and the password is asked each time.
 ```sh
 cp .env.example .env   # then set OVH_SFTP_USER and OVH_SFTP_HOST in .env
 ```
+
+### Automatic deploys
+
+`.github/workflows/deploy.yml` does the same as `just deploy` on GitHub for every push to `main`
+
+It needs these secrets in the `production` environment (Settings > Environments > production),
+
+| Secret                 | Value                                    |
+|------------------------|------------------------------------------|
+| `OVH_SFTP_USER`        | FTP login                                |
+| `OVH_SFTP_HOST`        | FTP server                               |
+| `OVH_SFTP_PASSWORD`    | FTP password                             |
+| `OVH_SFTP_KNOWN_HOSTS` | output of `ssh-keyscan "$OVH_SFTP_HOST"` |
+
+`just deploy` still works as a manual fallback.

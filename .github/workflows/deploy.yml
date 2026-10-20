@@ -1,0 +1,55 @@
+# Builds every push to main and uploads it to the OVH hosting,
+# like `just deploy` but without the prompts.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time; a newer push waits for the running one instead of cancelling a half-done upload
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://marin-dylan.dev
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.3
+
+      - run: bun install --frozen-lockfile
+      - run: bun run release
+
+      - name: Install lftp
+        run: sudo apt-get update -q && sudo apt-get install -yq lftp
+
+      - name: Trust the server
+        env:
+          OVH_SFTP_KNOWN_HOSTS: ${{ secrets.OVH_SFTP_KNOWN_HOSTS }}
+        run: |
+          : "${OVH_SFTP_KNOWN_HOSTS:?Set the OVH_SFTP_KNOWN_HOSTS secret (see README)}"
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$OVH_SFTP_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Upload
+        env:
+          OVH_SFTP_USER: ${{ secrets.OVH_SFTP_USER }}
+          OVH_SFTP_HOST: ${{ secrets.OVH_SFTP_HOST }}
+          LFTP_PASSWORD: ${{ secrets.OVH_SFTP_PASSWORD }}
+        run: |
+          : "${OVH_SFTP_USER:?Set the OVH_SFTP_USER secret}"
+          : "${OVH_SFTP_HOST:?Set the OVH_SFTP_HOST secret}"
+          : "${LFTP_PASSWORD:?Set the OVH_SFTP_PASSWORD secret}"
+          lftp --env-password -u "$OVH_SFTP_USER" "sftp://$OVH_SFTP_HOST" \
+            -e "mirror --reverse --delete --verbose dist/ www/; quit"
