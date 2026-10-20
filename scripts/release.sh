@@ -1,12 +1,8 @@
 #!/usr/bin/env bash
-# Builds the committed `main` branch into $RELEASE_DIR, never the working tree: uncommitted or untracked files are
-# left out. `just preview` serves this build and `just deploy` uploads it, so what you preview is what goes online.
-# RELEASE_REF builds another commit or branch instead of main.
-#
-# The commit's own package.json says how: its "release" script runs the checks and must produce dist/.
-#
-# The build runs outside the repository: bun, tsc and module resolution look for package.json, tsconfig.json and
-# node_modules in parent folders, and inside the repository they would find the working tree's.
+# Builds the committed `main` branch into $RELEASE_DIR.
+# `just preview` serves this build and `just deploy` uploads it,
+# so what you preview is what goes online.
+# The build runs outside the repository
 set -euo pipefail
 
 ref=${RELEASE_REF:-main}
@@ -24,7 +20,7 @@ while [[ $dir != / ]]; do
     dir=$(dirname "$dir")
 done
 
-# Same commit already built: reuse it, so deploy uploads exactly the files that were previewed
+# Same commit already built reuse it
 if [[ -f $out/COMMIT && $(<"$out/COMMIT") == "$commit" && -d $out/src/dist ]]; then
     echo "Release already built from $ref: $summary"
     exit 0

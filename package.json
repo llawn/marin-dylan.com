@@ -3,9 +3,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "release": "rm -rf dist && cp -r www dist"
+    "dev": "bun run scripts/dev.ts",
+    "build": "bun run scripts/build.ts",
+    "test": "bun test ./tests",
+    "typecheck": "tsc --noEmit",
+    "release": "bun run typecheck && bun run test && bun run build"
   },
   "devDependencies": {
-    "@types/bun": "^1.4.3"
+    "@types/bun": "^1.4.3",
+    "typescript": "^7.0.2"
   }
 }

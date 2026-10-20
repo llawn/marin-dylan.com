@@ -1,4 +1,4 @@
-// Serve the production build from dist/ (run `bun run build` first)
+// Serve the production build from dist/
 import { join, normalize } from "node:path";
 
 const root = "dist";
@@ -13,7 +13,6 @@ const server = Bun.serve({
         const file = Bun.file(join(root, path));
         if (await file.exists()) return new Response(file);
 
-        // Like Apache: /fr -> /fr/ when it is a directory with an index
         if (await Bun.file(join(root, path, "index.html")).exists()) {
             return Response.redirect(`${path}/`, 301);
         }
