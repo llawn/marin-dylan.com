@@ -23,6 +23,8 @@ jobs:
       url: https://marin-dylan.dev
     steps:
       - uses: actions/checkout@v5
+        with:
+          lfs: true
 
       - uses: oven-sh/setup-bun@v2
         with:
