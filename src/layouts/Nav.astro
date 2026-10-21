@@ -1,7 +1,9 @@
 ---
 // The navigation bar, fixed at the top
-// With `autohide`, it hides while the hero shows my name, and comes down once it is out of view.
+// With `autohide`, it hides while the hero shows my name, and comes down
+// once it is out of view, or while the mouse is at the top of the window.
 // Without JavaScript it always shows.
+import ThemeSwitch from "../components/ThemeSwitch.astro";
 
 export interface NavLink {
     href: string;
@@ -23,14 +25,23 @@ const { name, links, autohide = false } = Astro.props;
         <ul class="nav-links">
             {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
         </ul>
+        <ThemeSwitch />
     </div>
 </nav>
 
 <script>
-    // Hidden while my name shows in the hero, down once it is out of view
+    // Hidden while my name shows in the hero
     const name = document.querySelector("h1");
     for (const nav of document.querySelectorAll<HTMLElement>(".nav[data-autohide]")) {
-        if (name) new IntersectionObserver(([entry]) => nav.classList.toggle("nav-hidden", entry!.isIntersecting)).observe(name);
+        if (!name) continue;
+        new IntersectionObserver(([entry]) => nav.classList.toggle("nav-hidden", entry!.isIntersecting)).observe(name);
+
+        // Down while the mouse is where the nav goes (with a margin)
+        const PEEK_MARGIN = 32;
+        document.addEventListener("pointermove", (event) => {
+            if (event.pointerType === "mouse") nav.classList.toggle("nav-peek", event.clientY < nav.offsetHeight + PEEK_MARGIN);
+        });
+        document.documentElement.addEventListener("mouseleave", () => nav.classList.remove("nav-peek"));
     }
 </script>
 
@@ -49,8 +60,8 @@ const { name, links, autohide = false } = Astro.props;
         transition: translate 0.25s ease-out;
     }
 
-    /* Always shown when focused */
-    :global(.js) .nav-hidden:not(:focus-within) {
+    /* Always shown when focused or when the mouse is at the top */
+    :global(.js) .nav-hidden:not(:focus-within, .nav-peek) {
         translate: 0 -100%;
     }
 

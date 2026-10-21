@@ -1,6 +1,7 @@
 ---
 // Hero section (home page)
 import { Image } from "astro:assets";
+import Icon from "../components/Icon.astro";
 import type { Hero } from "../content/types.ts";
 import { fullName, type PersonName } from "../site.ts";
 
@@ -17,8 +18,8 @@ const { name, hero } = Astro.props;
         <h1>{fullName(name)}</h1>
         <p class="tagline">{hero.tagline}</p>
         <p class="meta">
-            <span>{hero.school}</span>
-            <span>{hero.location}</span>
+            <span><Icon name="book" /> {hero.school}</span>
+            <span><Icon name="mapPin" /> {hero.location}</span>
         </p>
         <p class="availability">{hero.availability}</p>
         <div class="actions"><slot name="actions" /></div>

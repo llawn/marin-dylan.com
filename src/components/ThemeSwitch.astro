@@ -1,0 +1,75 @@
+---
+// The switch between light and dark mode.
+// It shows the theme it goes to (moon when light, sun when dark).
+// Without JS it stays hidden, and the page follows the system.
+// The new colours spread in a circle from the switch to the bottom left corner.
+import Icon from "./Icon.astro";
+---
+
+<button class="theme-switch" type="button" aria-label="Switch to dark mode" hidden><Icon name="moon" /><Icon name="sun" /></button>
+
+<script>
+    import type { Theme } from "../lib/theme.ts";
+    import { chooseTheme, onThemeChange, shownTheme } from "../scripts/theme.ts";
+
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+
+    /** Transition in a circle growing from `button` to the farthest corner of the window. */
+    function switchFrom(button: HTMLElement, theme: Theme) {
+        if (!document.startViewTransition || reducedMotion.matches) return chooseTheme(theme);
+
+        const { left, top, width, height } = button.getBoundingClientRect();
+        const x = left + width / 2;
+        const y = top + height / 2;
+        const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+
+        document.startViewTransition(() => chooseTheme(theme)).ready.then(() => {
+            document.documentElement.animate(
+                { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+                { duration: 900,easing: "cubic-bezier(0.65, 0, 0.35, 1)", pseudoElement: "::view-transition-new(root)" },
+            );
+        });
+    }
+
+    for (const button of document.querySelectorAll<HTMLButtonElement>(".theme-switch")) {
+        const update = () => {
+            const theme = shownTheme();
+            button.dataset.theme = theme;
+            button.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
+        };
+        button.addEventListener("click", () => switchFrom(button, shownTheme() === "dark" ? "light" : "dark"));
+        onThemeChange(update);
+        update();
+        button.hidden = false;
+    }
+</script>
+
+<style>
+    .theme-switch {
+        display: grid;
+        place-items: center;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: 1px solid var(--rule);
+        border-radius: 50%;
+        background: transparent;
+        color: var(--accent);
+        cursor: pointer;
+    }
+
+    .theme-switch[hidden],
+    .theme-switch[data-theme="light"] > :global(.icon:last-child),
+    .theme-switch[data-theme="dark"] > :global(.icon:first-child) {
+        display: none;
+    }
+</style>
+
+<style is:global>
+    /* No default cross-fade on the theme change: the circle does it */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+    }
+</style>

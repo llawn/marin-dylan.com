@@ -22,8 +22,8 @@ const nav = {
 
 <Base title={fullName(site.name)} description={home.description} nav={nav}>
     <Hero name={site.name} hero={home.hero}>
-        <Button slot="actions" href={email}>{home.labels.emailButton}</Button>
-        <Button slot="actions" href={github} variant="secondary">GitHub</Button>
+        <Button slot="actions" href={email} icon="mail">{home.labels.emailButton}</Button>
+        <Button slot="actions" href={github} icon="github" variant="secondary">GitHub</Button>
     </Hero>
     <main id="main">
         <About title={home.labels.about} text={home.about} />
@@ -31,8 +31,8 @@ const nav = {
     <Contact
         title={home.labels.contact}
         links={[
-            { href: email, label: site.email },
-            { href: github, label: `github.com/${site.githubUser}` },
+            { href: email, label: site.email, icon: "mail" },
+            { href: github, label: `github.com/${site.githubUser}`, icon: "github" },
         ]}
         owner={fullName(site.name)}
     />
