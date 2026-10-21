@@ -28,6 +28,7 @@ const darkMode = whenDark(":root", dark.replace(/\/\*[\s\S]*?\*\//g, ""));
         <title>{title}</title>
         <meta name="description" content={description} />
         <link rel="canonical" href={new URL(Astro.url.pathname, site.url)} />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <!--
             Before anything is shown: the theme the reader chose, if any (else the system's).
         -->
