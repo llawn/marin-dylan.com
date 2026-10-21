@@ -1,26 +1,31 @@
 # marin-dylan.dev
 
-Personal website, written in TypeScript and run with [Bun](https://bun.com/).
+Personal website, built with [Astro](https://astro.build/) and run with [Bun](https://bun.com/).
 
 ```sh
 just dev            # dev server on http://localhost:3000
-just build          # type-check, test and build the working tree into dist/
+just test           # type-check, build the working tree into dist/ and test it
 ```
 
 ## Layout
 
 ```
-src/page.ts          the page
-scripts/build.ts     writes dist/
-scripts/dev.ts       dev server
-public/.htaccess     HTTPS redirect
-tests/               bun test
+src/site.ts          site general information
+src/content/         data only
+src/pages/           to define specific routes that produce a full HTML document.
+src/layouts/         reusable Astro components that wrap pages to provide a consistent shell.
+src/components/      reusable pieces
+src/sections/        holds the content blocks of a page
+src/lib/             generic TS
+src/styles/          global CSS
+public/              files used as it is by the browser
+tests/               test files
 ```
 
 ## Publishing
 
-Only the committed `main` branch goes online, never the working tree: work with `just dev`, commit what is ready,
-then check and publish it.
+Only the committed `main` branch goes online, never the working tree.
+You can work with `just dev`, commit what is ready, then check with `just preview`.
 
 ```sh
 just preview        # builds main and serves it on port 3001
@@ -30,9 +35,9 @@ just deploy         # uploads the main build to the OVH hosting.
 
 `scripts/release.sh` extracts `main` with `git archive` into a folder outside the repository
 installs the locked dependencies and runs the `release` script of that commit's `package.json`
-(type check, tests, build), stopping on any failure.
+(type check, build, tests), stopping on any failure.
 
-`just deploy` uploads exactly what `just preview` show.
+`just deploy` uploads what `just preview` show.
 
 The upload mirrors the build into the hosting's `www/` folder over SFTP with `lftp`,
 deleting remote files that are not in the build.

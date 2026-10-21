@@ -1,0 +1,26 @@
+---
+// Decorative icon, the text next to it must carry the meaning.
+import { ICONS, type IconName } from "./icons.ts";
+
+interface Props {
+    name: IconName;
+}
+
+const { name } = Astro.props;
+---
+
+<svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" set:html={ICONS[name]} />
+
+<style>
+    .icon {
+        width: 1.1em;
+        height: 1.1em;
+        flex-shrink: 0;
+        vertical-align: -0.15em;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+    }
+</style>

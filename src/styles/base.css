@@ -1,0 +1,83 @@
+/* Element defaults and helpers, no component classes */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    color-scheme: light dark; /* the browser's mode */
+    scroll-behavior: smooth;
+    font-size: 110%;
+    overflow-x: clip;
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+body {
+    margin: 0;
+    font-family: var(--font);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+a {
+    color: var(--accent);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+}
+
+a:hover {
+    text-decoration-thickness: 2px;
+}
+
+h1, h2, h3 {
+    line-height: 1.15;
+    font-weight: 700;
+}
+
+strong {
+    font-weight: 700;
+}
+
+main {
+    max-width: var(--page-width);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+}
+
+[id] {
+    scroll-margin-top: 72px; /* so the target isn't hidden behind the nav bar */
+}
+
+/* Visible keyboard focus (WCAG 2.4.7, 2.4.11) */
+:focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* Long paragraphs: justified, with hyphenation. Left-aligned on narrow screens. */
+.justified {
+    text-align: justify;
+    hyphens: auto;
+    text-wrap: pretty;
+}
+
+@media (max-width: 720px) {
+    .justified {
+        text-align: left;
+    }
+}

@@ -1,0 +1,72 @@
+---
+// Page footer
+import Icon from "../components/Icon.astro";
+import type { IconName } from "../components/icons.ts";
+
+export interface ContactLink {
+    href: string;
+    label: string;
+    icon?: IconName;
+}
+
+interface Props {
+    title: string;
+    links: readonly ContactLink[];
+    owner: string;
+}
+
+const { title, links, owner } = Astro.props;
+---
+
+<footer id="contact">
+    <h2>{title}</h2>
+    <p class="links">
+        {links.map((link) => <a href={link.href}>{link.icon && <Icon name={link.icon} />} {link.label}</a>)}
+    </p>
+    <p class="copyright">© {new Date().getFullYear()} {owner}</p>
+</footer>
+
+<style>
+    footer {
+        max-width: var(--page-width);
+        margin: 0 auto;
+        padding: 0 var(--gutter) 40px;
+    }
+
+    footer > * {
+        max-width: var(--prose-width);
+    }
+
+    h2 {
+        margin: 0 0 16px;
+        padding-top: 56px;
+        border-top: 1px solid var(--rule);
+        font-size: var(--text-heading);
+    }
+
+    p {
+        margin: 0 0 16px;
+    }
+
+    .links {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        font-size: var(--text-lead);
+        font-weight: 600;
+    }
+
+    .links a {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 4px 0;
+    }
+
+    .copyright {
+        margin-top: 40px;
+        font-size: var(--text-small);
+        color: var(--muted);
+    }
+</style>

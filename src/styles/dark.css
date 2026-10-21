@@ -1,0 +1,11 @@
+/*
+ * Dark mode: the tokens of tokens.css for the dark mode using the default "Noctalia" palette.
+ * src/layouts/Base.astro applies them when the system is in dark mode or when the reader chose dark.
+ */
+--bg: #070722; /* surface */
+--text: #f3edf7; /* onSurface */
+--muted: #7c80b4; /* onSurfaceVariant */
+--accent: #fff59b; /* primary */
+--accent-contrast: #0e0e43; /* onPrimary */
+--focus: #9bfece; /* tertiary */
+--rule: #21215f; /* outline */

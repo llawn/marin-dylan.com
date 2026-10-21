@@ -1,0 +1,106 @@
+---
+// Hero section (home page)
+import { Image } from "astro:assets";
+import type { Hero } from "../content/types.ts";
+import { fullName, type PersonName } from "../site.ts";
+
+interface Props {
+    name: PersonName;
+    hero: Hero;
+}
+
+const { name, hero } = Astro.props;
+---
+
+<header class="hero">
+    <div class="hero-text">
+        <h1>{fullName(name)}</h1>
+        <p class="tagline">{hero.tagline}</p>
+        <p class="meta">
+            <span>{hero.school}</span>
+            <span>{hero.location}</span>
+        </p>
+        <p class="availability">{hero.availability}</p>
+        <div class="actions"><slot name="actions" /></div>
+    </div>
+    <Image
+        class="photo"
+        src={hero.photo.src}
+        alt={hero.photo.alt}
+        widths={[160, 250]}
+        sizes="(max-width: 860px) 10rem, 14rem"
+        loading="eager"
+    />
+</header>
+
+<style>
+    .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 40px 64px;
+        max-width: var(--page-width);
+        margin: 0 auto;
+        padding: 112px var(--gutter) 72px;
+    }
+
+    h1 {
+        margin: 0 0 16px;
+        font-size: var(--text-display);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        line-height: 1;
+    }
+
+    .tagline {
+        max-width: 22em;
+        margin: 0 0 20px;
+        font-size: var(--text-lead);
+        line-height: 1.4;
+    }
+
+    .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 24px;
+        margin: 0 0 28px;
+        color: var(--muted);
+    }
+
+    .availability {
+        margin: 0 0 20px;
+        font-weight: 600;
+    }
+
+    .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    /* A round profile picture and a thin ring a little away from it */
+    .photo {
+        display: block;
+        width: 14rem;
+        height: auto;
+        aspect-ratio: 1;
+        object-fit: cover;
+        object-position: 50% 30%;
+        border-radius: 50%;
+        outline: 1px solid var(--rule);
+        outline-offset: 8px;
+    }
+
+    @media (max-width: 860px) {
+        .hero {
+            grid-template-columns: 1fr;
+            padding-top: 48px;
+        }
+
+        /* The profile picture above the name */
+        .photo {
+            order: -1;
+            width: 10rem;
+        }
+    }
+</style>

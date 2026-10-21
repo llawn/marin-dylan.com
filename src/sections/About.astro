@@ -1,0 +1,15 @@
+---
+import Section from "../components/Section.astro";
+import { spans, type RichText } from "../lib/rich-text.ts";
+
+interface Props {
+    title: string;
+    text: RichText;
+}
+
+const { title, text } = Astro.props;
+---
+
+<Section id="about" title={title}>
+    <p class="justified">{spans(text).map((span) => (span.bold ? <strong>{span.text}</strong> : span.text))}</p>
+</Section>

@@ -1,0 +1,47 @@
+---
+// The HTML document around a page.
+// The global styles first
+import "../styles/fonts.css";
+import "../styles/tokens.css";
+import "../styles/base.css";
+import dark from "../styles/dark.css?raw";
+import Nav, { type NavLink } from "./Nav.astro";
+import { THEME_KEY, whenDark } from "../lib/theme.ts";
+import { fullName, site } from "../site.ts";
+
+interface Props {
+    title: string;
+    description: string;
+    nav: { links: readonly NavLink[]; autohide?: boolean };
+}
+
+const { title, description, nav } = Astro.props;
+/** The dark tokens without comments of the dark.css file. */
+const darkMode = whenDark(":root", dark.replace(/\/\*[\s\S]*?\*\//g, ""));
+---
+
+<!doctype html>
+<html lang={site.lang}>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={new URL(Astro.url.pathname, site.url)} />
+        <!--
+            Before anything is shown: the theme the reader chose, if any (else the system's).
+        -->
+        <script is:inline define:vars={{ key: THEME_KEY }}>
+            try {
+                const theme = localStorage.getItem(key);
+                if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme;
+            } catch {}
+            document.documentElement.classList.add("js");
+        </script>
+        <style is:inline set:html={darkMode}></style>
+    </head>
+    <body>
+        <Nav name={fullName(site.name)} {...nav} />
+        <slot />
+    </body>
+</html>
